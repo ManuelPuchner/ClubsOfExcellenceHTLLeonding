@@ -62,7 +62,9 @@ model User {
     sessions   Session[]
     User_Clubs User_Club?
 
-    isNewUser Boolean @default(true)
+    isNewUser              Boolean @default(true)
+    isStudent              Boolean @default(false)
+    emailVerificationToken String?
 
     adminOfClubs Club[]
 }
@@ -83,7 +85,17 @@ model Club {
     adminId     String
     admin       User       @relation(fields: [adminId], references: [id], onDelete: Cascade)
     User_Clubs  User_Club?
-    qanda       Json?
+    qanda       QandA[]
+
+    @@unique([clubname])
+}
+
+model QandA {
+    id       String @id @default(cuid())
+    clubId   String
+    club     Club   @relation(fields: [clubId], references: [id], onDelete: Cascade)
+    question String
+    answer   String
 }
 
 model User_Club {

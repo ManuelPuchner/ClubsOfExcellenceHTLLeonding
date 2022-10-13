@@ -9,36 +9,36 @@ const Home: NextPage = () => {
     text: "hello world",
   });
 
-    const clubs = [
-      {
-        title: "Volleyball",
-        description: "Willkommen beim Volleyball Club der HTL Leonding",
-        buttonText: "mehr erfahren",
-        buttonLink: "/volleyball",
-        image: "/eee.png",
-      },
-      {
-        title: "E-Sports",
-        description: "Willkommen beim E-Sport Club der HTL Leonding",
-        buttonText: "mehr erfahren",
-        buttonLink: "/club/esports",
-        image: "/e-sports-card.png",
-      },
-      {
-        title: "Linux",
-        description: "Willkommen beim Linux Club der HTL Leonding",
-        buttonText: "mehr erfahren",
-        buttonLink: "/linux",
-        image: "/eee.png",
-      },
-      {
-        title: "Schach",
-        description: "Willkommen beim Schach Club der HTL Leonding",
-        buttonText: "mehr erfahren",
-        buttonLink: "/schach",
-        image: "/eee.png",
-      },
-    ];
+  const clubs = [
+    {
+      title: "Volleyball",
+      description: "Willkommen beim Volleyball Club der HTL Leonding",
+      buttonText: "mehr erfahren",
+      buttonLink: "/volleyball",
+      image: "/eee.png",
+    },
+    {
+      title: "E-Sports",
+      description: "Willkommen beim E-Sport Club der HTL Leonding",
+      buttonText: "mehr erfahren",
+      buttonLink: "/club/esports",
+      image: "/e-sports-card.png",
+    },
+    {
+      title: "Linux",
+      description: "Willkommen beim Linux Club der HTL Leonding",
+      buttonText: "mehr erfahren",
+      buttonLink: "/linux",
+      image: "/eee.png",
+    },
+    {
+      title: "Schach",
+      description: "Willkommen beim Schach Club der HTL Leonding",
+      buttonText: "mehr erfahren",
+      buttonLink: "/schach",
+      image: "/eee.png",
+    },
+  ];
 
   return (
     <div className="homepage min-h-full">

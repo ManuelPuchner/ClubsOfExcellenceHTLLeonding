@@ -4,6 +4,8 @@ import * as trpcNext from "@trpc/server/adapters/next";
 import { Session } from "next-auth";
 import { getServerAuthSession } from "../common/get-server-auth-session";
 import { prisma } from "../db/client";
+import { oAuth2Client } from "../../utils/mail";
+import { env } from "../../env/server.mjs";
 
 type CreateContextOptions = {
   session: Session | null;
@@ -14,9 +16,11 @@ type CreateContextOptions = {
  * - trpc's `createSSGHelpers` where we don't have req/res
  **/
 export const createContextInner = async (opts: CreateContextOptions) => {
+  oAuth2Client.setCredentials({ refresh_token: env.GOOGLE_REFRESH_TOKEN })
   return {
     session: opts.session,
     prisma,
+    oAuth2Client
   };
 };
 

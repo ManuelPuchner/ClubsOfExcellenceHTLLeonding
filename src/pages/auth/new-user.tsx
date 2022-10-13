@@ -1,10 +1,32 @@
-import type { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { trpc } from "../utils/trpc";
+import { useRouter } from "next/router";
+import React from "react";
+import { trpc } from "../../utils/trpc";
 
 function NewUser() {
   const { data: session, status } = useSession();
+  const [showUpdatedSuccess, setShowUpdatedSuccess] = React.useState(false);
+
+  const router = useRouter();
+
+  const newUserMutation = trpc.auth.updateNewUser.useMutation();
+
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      username: formData.get("username")?.toString() || "",
+      firstname: formData.get("firstname")?.toString() || "",
+      lastname: formData.get("lastname")?.toString() || "",
+      email: formData.get("email")?.toString() || "",
+      phone: formData.get("phone")?.toString() || "",
+    };
+    console.log(data);
+
+    newUserMutation.mutate(data);
+    setShowUpdatedSuccess(true);
+  };
 
   if (!session?.user?.isNewUser) {
     return (
@@ -56,22 +78,18 @@ function NewUser() {
     );
   }
 
-  const newUserMutation = trpc.auth.updateNewUser.useMutation();
-
-  const submitForm = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = {
-      username: formData.get("username")?.toString() || "",
-      firstname: formData.get("firstname")?.toString() || "",
-      lastname: formData.get("lastname")?.toString() || "",
-      email: formData.get("email")?.toString() || "",
-      phone: formData.get("phone")?.toString() || "",
-    };
-    console.log(data);
-    
-    newUserMutation.mutate(data);
-  };
+  if (showUpdatedSuccess) {
+    return (
+      <>
+        <div className="container mx-auto p-4">
+          <div className="mx-auto w-full max-w-sm rounded-lg border border-gray-200 bg-white p-4 shadow-md dark:border-gray-700 dark:bg-gray-800 sm:p-6 md:p-8">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Vielen Dank!</h1>
+            <p>Bitte überprüfe dein E-Mail Postfach</p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">

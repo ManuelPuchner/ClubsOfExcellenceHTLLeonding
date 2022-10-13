@@ -1,5 +1,11 @@
 import { t, authedProcedure } from "../trpc";
 import { z } from "zod";
+import { env } from "../../../env/server.mjs";
+import Mail from "nodemailer/lib/mailer";
+import { createTransport } from "nodemailer";
+import { getMailHtml } from "../../../utils/mailhtml";
+import { randomUUID } from "crypto";
+import { getBaseUrl } from "../../../utils/trpc";
 
 export const authRouter = t.router({
   getSession: t.procedure.query(({ ctx }) => {
@@ -14,7 +20,22 @@ export const authRouter = t.router({
     lastname: z.string(),
     email: z.string(),
     phone: z.string(),
-  })).mutation(({ ctx, input }) => {
+  })).mutation(async ({ ctx, input }) => {
+    const emailAuthToken = generateAuthToken(input.email);
+    const authUrl = `${getBaseUrl()}/auth/verify-email?token=${emailAuthToken}`;
+    const mailOptions: Mail.Options = {
+      from: `Clubs Of Excellence Auth <${env.GOOGLE_EMAIL}>`,
+      to: input.email,
+      subject: "Welcome to Clubs of Excellence!",
+      text: `Welcome to Clubs of Excellence, ${input.firstname}! Klicke ${null} um deine Email zu verifizieren.`,
+      html: getMailHtml(input.firstname, authUrl),
+    };
+    const accessToken = (await ctx.oAuth2Client.getAccessToken()).token;
+    if(!accessToken) {
+      throw new Error("No access token");
+    }
+    const transporter = createTransport(getTransporterConfig(accessToken));
+    transporter.sendMail(mailOptions);
     return ctx.prisma.user.update({
       where: {
         id: ctx.session?.user.id,
@@ -26,7 +47,12 @@ export const authRouter = t.router({
         email: input.email,
         phoneNumber: input.phone,
         isNewUser: false,
+        emailVerificationToken: emailAuthToken,
       },
     });
   }),
 });
+
+const generateAuthToken = (email: string) => {
+  return randomUUID();
+}

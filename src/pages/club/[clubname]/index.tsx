@@ -1,55 +1,20 @@
 import { Card } from "flowbite-react";
 import Footer from "../../components/Footer";
 import Accordion from "../../components/Accordion";
-import MarkdownStyled from "../../components/MarkdownStyled"; 
-import { useRouter } from "next/router";
-
+import MarkdownStyled from "../../components/MarkdownStyled";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { prisma } from "../../../server/db/client";
+import { Club, User, QandA } from "@prisma/client";
 // TODO: add types
-export default function ClubPageTemplate() {
+export default function ClubPageTemplate({
+  club,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const clubInfo = club;
+  console.log(clubInfo);
 
-  const router = useRouter();
-  const { clubname } = router.query;
-  const aboutMarkdown = `
-  # About
-  The Esports Club is a student-run organization that aims to provide a platform for students to compete in esports tournaments and to promote esports culture on campus. We host a variety of tournaments throughout the year, including League of Legends, Overwatch, Rocket League, and more. We also host a variety of events, including LAN parties, movie nights, and more. We are always looking for new members to join our club, so feel free to join our Discord server and say hi!
-  - test
-  - test
-  `;
-
-  const clubInfo = {
-    clubname: "E-Sports",
-    description: "Willkommen beim E-Sport Club der HTL Leonding",
-    image: "/e-sports-card.png",
-    about: aboutMarkdown,
-    contact: {
-      contactname: "Lorenz Horvath",
-      image: "",
-      email: "test@gmail.com",
-      phone: "0664 1234567",
-      linkButton: {
-        text: "Discord",
-        url: "https://discord.gg/club",
-      },
-    },
-    socialMedia: {},
-    qa: [
-      {
-        question: "Wie kann ich mitmachen?",
-        answer: "# Join einach unserem Discord Server",
-      },
-      {
-        question: "Wie kann ich mitmachen?",
-        answer: "Join einach unserem Discord Server",
-      },
-      {
-        question: "Wie kann ich mitmachen?",
-        answer: "Join einach unserem Discord Server",
-      },
-    ],
-  };
   let qanda: string | any[] | undefined = [];
-  if (clubInfo.qa != undefined && clubInfo.qa.length != 0) {
-    const temp = clubInfo.qa.map((qa: any) => {
+  if (clubInfo.qanda != undefined && clubInfo.qanda.length != 0) {
+    const temp = clubInfo.qanda.map((qa: any) => {
       return {
         title: qa.question,
         content: qa.answer,
@@ -149,3 +114,47 @@ export default function ClubPageTemplate() {
     </>
   );
 }
+
+async function getDbClub(clubname: string): Promise<
+  | (Club & {
+      admin: User;
+      qanda: QandA[];
+    })
+  | null
+> {
+  const club = await prisma.club.findUnique({
+    where: {
+      clubname: clubname,
+    },
+    include: {
+      qanda: true,
+      admin: true,
+    },
+  });
+
+  return club;
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const clubName = ctx.params?.clubname;
+
+  const dbclub = await getDbClub(clubName as string);
+
+  if (clubName == undefined) {
+    return {
+      notFound: true,
+    };
+  }
+
+  if (!dbclub) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      club: dbclub,
+    },
+  };
+};
