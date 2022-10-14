@@ -4,9 +4,12 @@ import PictureEdit from "../../components/PictureEdit";
 import QandAEdit from "../../components/QandAEdit";
 import CreateClubStep from "./CreateClubStep";
 import { trpc } from "../../../utils/trpc";
-import { Club } from "@prisma/client";
+import { Club, User } from "@prisma/client";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
+import { useEffect, useState } from "react";
+import { inferProcedureOutput } from "@trpc/server";
+import { useRouter } from "next/router";
 
 const useCreateClubStore = create<ClubsInfoState>((set) => ({
   clubname: "",
@@ -37,7 +40,7 @@ const useCreateClubStore = create<ClubsInfoState>((set) => ({
   setAdminId: (adminId: string) => set({ adminId }),
 }));
 
-function Create({}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+function Create() {
   const [clubName, setClubName] = useCreateClubStore((state) => [
     state.clubname,
     state.setClubname,
@@ -50,6 +53,21 @@ function Create({}: InferGetServerSidePropsType<typeof getServerSideProps>) {
     state.adminId,
     state.setAdminId,
   ]);
+
+  const [email, setEmail] = useState("");
+  const [timer, setTimer] = useState<number | null>(null);
+  const [results, setResults] = useState<
+    {
+      email: string | null;
+      id: string;
+      name: string | null;
+      image: string | null;
+      firstname: string | null;
+      lastname: string | null;
+    }[]
+  >([]);
+
+  const router = useRouter();
 
   const mutation = trpc.club.createClub.useMutation();
 
@@ -64,7 +82,29 @@ function Create({}: InferGetServerSidePropsType<typeof getServerSideProps>) {
       adminId: state.adminId,
     });
 
-    console.log(data);
+    if (data) {
+      router.push(`/club/${data.clubname}`);
+    }
+  };
+
+  const searchUserByEmailMutation = trpc.user.searchUserByEMail.useMutation();
+  const searchUserByMail = (email: string) => {
+    setEmail(email);
+
+    if (timer) {
+      window.clearTimeout(timer);
+    }
+
+    const newTimer = window.setTimeout(async () => {
+      if (email.length > 0) {
+        const data = await searchUserByEmailMutation.mutateAsync({ email });
+        setResults(data);
+      } else {
+        setResults([]);
+      }
+    }, 500);
+
+    setTimer(newTimer);
   };
   return (
     <div
@@ -110,24 +150,50 @@ function Create({}: InferGetServerSidePropsType<typeof getServerSideProps>) {
             ></textarea>
           </div>
         </CreateClubStep>
-        <CreateClubStep stepText="Step 3: Kontact Person">
-          {/* <div>
+        <CreateClubStep stepText="Step 3: Kontact Person / Admin">
+          <div className="relative">
             <label
               htmlFor="contactPerson"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Kontakt Person
+              Kontakt Person / Admin
             </label>
             <input
               type="text"
-              value={adminId}
-              onChange={(e) => setAdminId(e.target.value)}
+              value={email}
+              onChange={(e) => searchUserByMail(e.target.value)}
               id="contactPerson"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="z.B.: @manuel.pchnr"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              placeholder="z.B.: m.muster@students.htl-leonding.ac.at"
               required
             />
-          </div> */}
+            {results.length > 0 && (
+              <div
+                id="dropdown"
+                className="absolute z-10 mt-2 w-fit divide-y divide-gray-100 rounded bg-white shadow dark:bg-gray-700"
+              >
+                <ul
+                  className="py-1 text-sm text-gray-700 dark:text-gray-200"
+                  aria-labelledby="dropdownDefault"
+                >
+                  {results.map((result) => (
+                    <li key={result.id}>
+                      <button
+                        onClick={() => {
+                          setEmail(result.email || "");
+                          setAdminId(result.id);
+                          setResults([]);
+                        }}
+                        className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        {result.email}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </CreateClubStep>
         <CreateClubStep stepText="Step 4: Q&A">
           <QandAEdit useStore={useCreateClubStore} />
@@ -172,41 +238,5 @@ function Create({}: InferGetServerSidePropsType<typeof getServerSideProps>) {
 }
 
 Create.auth = true;
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getServerAuthSession(ctx);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/api/auth/signin",
-        permanent: false,
-      },
-    };
-  }
-  if (session.user?.isNewUser) {
-    return {
-      redirect: {
-        destination: "/auth/new-user",
-        permanent: false,
-      },
-    };
-  }
-
-  if (!session.user?.isStudent) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  
-  return {
-    props: {
-      test: "hello",
-    },
-  };
-};
 
 export default Create;
