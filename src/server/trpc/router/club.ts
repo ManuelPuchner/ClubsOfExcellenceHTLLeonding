@@ -23,7 +23,7 @@ export const clubRouter = t.router({
         qanda: {
           createMany: {
             data: input.qanda,
-          }
+          },
         },
         adminId: input.adminId,
       },

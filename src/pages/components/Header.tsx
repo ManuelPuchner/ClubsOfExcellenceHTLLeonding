@@ -1,7 +1,8 @@
 // react
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { useRef } from "react";
+import React, { useRef } from "react";
+import NavLink from "./NavLink";
 export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleMenu = () => {
@@ -11,7 +12,6 @@ export default function Header() {
   };
 
   const { data: session, status } = useSession();
-
 
   return (
     <nav className="fixed z-20 w-full border-gray-200 bg-white px-2 py-2.5 dark:bg-gray-900 md:px-4">
@@ -34,11 +34,12 @@ export default function Header() {
               </a>
             </Link>
           ) : (
-            <Link href="/api/auth/signout">
-              <a className="mr-1 rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 md:mr-2 md:px-5 md:py-2.5">
-                Log out
-              </a>
-            </Link>
+            <button
+              onClick={() => signOut()}
+              className="mr-1 rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 md:mr-2 md:px-5 md:py-2.5"
+            >
+              Log out
+            </button>
           )}
           <button
             onClick={toggleMenu}
@@ -71,29 +72,15 @@ export default function Header() {
         >
           <ul className="flex flex-col font-medium md:flex-row md:space-x-8">
             <li>
-              <Link
-                href="/"
-                className="block rounded-t-md border border-gray-100 py-2 pr-4 pl-3 text-blue-600 hover:bg-gray-50 dark:border-gray-700 dark:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-                aria-current="page"
-              >
-                <a>Home</a>
-              </Link>
+              <NavLink href="/">Home</NavLink>
             </li>
+            {status === "authenticated" && (
+              <li>
+                <NavLink href="/club/create">Create a Club</NavLink>
+              </li>
+            )}
             <li>
-              <a
-                href="#"
-                className="block border-x border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-              >
-                Team
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block rounded-b-md border border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-              >
-                Contact
-              </a>
+              <NavLink href="#">Placeholder</NavLink>
             </li>
           </ul>
         </div>

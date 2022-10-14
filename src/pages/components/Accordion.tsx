@@ -1,13 +1,13 @@
 import {  useState } from "react";
 import MarkdownStyled from "./MarkdownStyled";
 
-type AccordionPartProps = {
+export type AccordionPartProp = {
   title: string;
   content: string;
 };
-type AccordionProps = {
-  parts: AccordionPartProps[];
-};
+export interface AccordionProps  {
+  parts: AccordionPartProp[];
+}
 export default function Accordion({ parts }: AccordionProps) {
   const [activePart, setActivePart] = useState(0);
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NavLink from "./NavLink";
 export default function Footer() {
   return (
     <>
@@ -6,19 +7,17 @@ export default function Footer() {
         <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <Link href="/" className="flex items-center">
-              <a>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/htllogo.png"
-                  className="mr-3 h-8"
-                  alt="FlowBite Logo"
-                />
-                <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
-                  Clubs of Excellence
-                </span>
-              </a>
-            </Link>
+            <NavLink href="#">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/htllogo.png"
+                className="mr-3 h-8"
+                alt="FlowBite Logo"
+              />
+              <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
+                Clubs of Excellence
+              </span>
+            </NavLink>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
             <div>
@@ -27,17 +26,17 @@ export default function Footer() {
               </h2>
               <ul className="text-gray-600 dark:text-gray-400">
                 <li className="mb-4">
-                  <Link href="/" className="hover:underline">
+                  <NavLink href="/" underline>
                     Clubs of Excellence
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
+                  <NavLink
                     href="https://tailwindcss.com/"
-                    className="hover:underline"
+                    underline
                   >
                     Tailwind CSS
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </div>
@@ -47,20 +46,17 @@ export default function Footer() {
               </h2>
               <ul className="text-gray-600 dark:text-gray-400">
                 <li className="mb-4">
-                  <a
+                  <NavLink
                     href="https://github.com/themesberg/flowbite"
-                    className="hover:underline "
+                    underline
                   >
                     Github
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a
-                    href="https://discord.gg/4eeurUVvTy"
-                    className="hover:underline"
-                  >
+                  <NavLink href="https://discord.gg/4eeurUVvTy" underline>
                     Discord
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </div>
@@ -70,14 +66,14 @@ export default function Footer() {
               </h2>
               <ul className="text-gray-600 dark:text-gray-400">
                 <li className="mb-4">
-                  <a href="#" className="hover:underline">
+                  <NavLink href="#" underline>
                     Privacy Policy
-                  </a>
+                  </NavLink>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <NavLink href="#" underline>
                     Terms &amp; Conditions
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </div>
@@ -87,15 +83,15 @@ export default function Footer() {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
             © 2022{" "}
-            <a
+            <NavLink
               href="https://manuelpuchner.ddns.net/"
-              className="hover:underline"
+              underline
             >
               Manuel Puchner
-            </a>
+            </NavLink>
           </span>
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-            <a
+            <NavLink
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
             >
@@ -112,8 +108,8 @@ export default function Footer() {
                 />
               </svg>
               <span className="sr-only">Facebook page</span>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
             >
@@ -130,8 +126,8 @@ export default function Footer() {
                 />
               </svg>
               <span className="sr-only">Instagram page</span>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
             >
@@ -144,8 +140,8 @@ export default function Footer() {
                 <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
               </svg>
               <span className="sr-only">Twitter page</span>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
             >
@@ -162,8 +158,8 @@ export default function Footer() {
                 />
               </svg>
               <span className="sr-only">GitHub account</span>
-            </a>
-            <a
+            </NavLink>
+            <NavLink
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
             >
@@ -180,7 +176,7 @@ export default function Footer() {
                 />
               </svg>
               <span className="sr-only">Dribbbel account</span>
-            </a>
+            </NavLink>
           </div>
         </div>
       </footer>

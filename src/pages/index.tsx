@@ -1,50 +1,37 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { trpc } from "../utils/trpc";
-import CardsSlider from "./components/cards/CardsSlider";
+import { Club } from "@prisma/client";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import CardWithImage from "./components/cards/CardWithImage";
+import { prisma } from "../server/db/client";
 
-const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({
-    text: "hello world",
-  });
-
-  const clubs = [
-    {
-      title: "Volleyball",
-      description: "Willkommen beim Volleyball Club der HTL Leonding",
-      buttonText: "mehr erfahren",
-      buttonLink: "/volleyball",
-      image: "/eee.png",
-    },
-    {
-      title: "E-Sports",
-      description: "Willkommen beim E-Sport Club der HTL Leonding",
-      buttonText: "mehr erfahren",
-      buttonLink: "/club/esports",
-      image: "/e-sports-card.png",
-    },
-    {
-      title: "Linux",
-      description: "Willkommen beim Linux Club der HTL Leonding",
-      buttonText: "mehr erfahren",
-      buttonLink: "/linux",
-      image: "/eee.png",
-    },
-    {
-      title: "Schach",
-      description: "Willkommen beim Schach Club der HTL Leonding",
-      buttonText: "mehr erfahren",
-      buttonLink: "/schach",
-      image: "/eee.png",
-    },
-  ];
-
+const Home = ({
+  clubs,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div className="homepage min-h-full">
-      <CardsSlider cardItems={clubs} />
+      {clubs.map((club: Club) => (
+        <div key={club.id}>
+          <CardWithImage
+            title={club.clubname}
+            description={club.description}
+            buttonText={"Join"}
+            buttonLink={`/club/${club.clubname}`}
+            image={club.image || ""}
+          />
+        </div>
+      ))}
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps<{ clubs: Club[] }> = async (
+  ctx
+) => {
+  const clubs = await prisma.club.findMany();
+  return {
+    props: {
+      clubs,
+    },
+  };
 };
 
 export default Home;
