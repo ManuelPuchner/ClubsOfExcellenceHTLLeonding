@@ -1,7 +1,7 @@
 import { Card } from "flowbite-react";
-import Footer from "../../components/Footer";
-import Accordion, { AccordionPartProp } from "../../components/Accordion";
-import MarkdownStyled from "../../components/MarkdownStyled";
+import Footer from "../../../components/Footer";
+import Accordion, { AccordionPartProp } from "../../../components/Accordion";
+import MarkdownStyled from "../../../components/MarkdownStyled";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { prisma } from "../../../server/db/client";
 import { Club, User, QandA } from "@prisma/client";
@@ -132,10 +132,7 @@ export const getServerSideProps: GetServerSideProps<{
 
   const dbclub = await prisma.club.findUnique({
     where: {
-      clubname_urlClubname: {
-        clubname: clubName,
-        urlClubname: clubName,
-      }
+      clubname: clubName,
     },
     include: {
       qanda: true,

@@ -1,15 +1,11 @@
 import type { ClubsInfoState, QandA } from "club";
 import create from "zustand";
-import PictureEdit from "../../components/PictureEdit";
-import QandAEdit from "../../components/QandAEdit";
+import PictureEdit from "../../../components/PictureEdit";
+import QandAEdit from "../../../components/QandAEdit";
 import CreateClubStep from "./CreateClubStep";
 import { trpc } from "../../../utils/trpc";
-import { Club, User } from "@prisma/client";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
-import { useEffect, useState } from "react";
-import { inferProcedureOutput } from "@trpc/server";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const useCreateClubStore = create<ClubsInfoState>((set) => ({
   clubname: "",
@@ -99,6 +95,8 @@ function Create() {
       if (email.length > 0) {
         const data = await searchUserByEmailMutation.mutateAsync({ email });
         setResults(data);
+        console.log(email, data);
+        
       } else {
         setResults([]);
       }
