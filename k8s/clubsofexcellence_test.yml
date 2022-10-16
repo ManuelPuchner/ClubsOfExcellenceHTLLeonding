@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clubsofexcellence
+  namespace: student-m-puchner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clubsofexcellence
+  template:
+    metadata:
+      labels:
+        app: clubsofexcellence
+    spec:
+      containers:
+        - name: clubsofexcellence
+          image: ghcr.io/manuelpuchner/clubsofexcellence-htl:latest
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clubsofexcellence-svc
+  namespace: student-m-puchner
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app: clubsofexcellence
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: clubsofexcellence
+  namespace: student-m-puchner
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - host: student.cloud.htl-leonding.ac.at
+      http:
+        paths:
+          - path: /m.puchner/meow(.*)$
+            pathType: Prefix
+            backend:
+              service:
+                name: clubsofexcellence-svc
+                port:
+                  number: 80
