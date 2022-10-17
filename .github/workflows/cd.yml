@@ -53,17 +53,6 @@ jobs:
         with:
           name: build
           path: .
-  docker-push:
-    needs: next-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Download next build
-        uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: .
       - name: Login to Github Container Registry
         uses: docker/login-action@v2
         with:
