@@ -68,7 +68,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_ownder }}
-          password: ${{ secrets.GH_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
         run: docker build . --tag $IMAGE_NAME
       - name: Push image
