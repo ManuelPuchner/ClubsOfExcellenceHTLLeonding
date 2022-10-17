@@ -47,6 +47,7 @@ jobs:
       - name: rm node modules
         run: rm -rf ./node_modules/
       - name: push push artifact
+        run: mkdir ./output/
         uses: actions/upload-artifact@v3
         with:
           name: build
