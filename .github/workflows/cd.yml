@@ -46,8 +46,9 @@ jobs:
           pnpm build
       - name: rm node modules
         run: rm -rf ./node_modules/
-      - name: push push artifact
+      - name: create artifact dir
         run: mkdir ./output/
+      - name: push push artifact
         uses: actions/upload-artifact@v3
         with:
           name: build
