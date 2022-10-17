@@ -12,9 +12,9 @@ COPY pnpm-lock.yaml pnpm-lock.yaml
 
 USER node
 
-RUN npm install -g pnpm
-RUN pnpm install --production
-RUN pnpm prisma generate
+RUN npm install pnpm
+RUN npx pnpm install --production
+RUN npx pnpm prisma generate
 
 COPY --chown=node:node .next .next
 COPY --chown=node:node public public
