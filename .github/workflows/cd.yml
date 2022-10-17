@@ -19,7 +19,6 @@ jobs:
       GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
       GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
       GOOGLE_EMAIL: ${{ secrets.GOOGLE_EMAIL }}
-    container: node:lts
     steps:
       - name: Checkout
         uses: actions/checkout@v3
