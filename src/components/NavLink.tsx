@@ -19,7 +19,7 @@ const NavLink = ({
       <a
         className={`${
           !className && (underline ? underlineHoverClasses : colorHoverClasses)
-        } ${className} block border-x border-gray-100 py-2 pr-4 pl-3 text-gray-700 dark:border-gray-700 dark:text-gray-400 md:border-0 md:p-0`}
+        } ${className} block border-gray-100 py-2 pr-4 pl-3 text-gray-700 dark:border-gray-700 dark:text-gray-400 md:border-0 md:p-0`}
       >
         {children}
       </a>
