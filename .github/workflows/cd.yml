@@ -44,6 +44,11 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           pnpm build
+      - name: push push artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: .
   docker-push:
     needs: next-build
     runs-on: ubuntu-latest

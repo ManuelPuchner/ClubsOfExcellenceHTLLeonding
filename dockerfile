@@ -7,7 +7,7 @@ RUN mkdir -p /home/node/app/ && chown -R node:node /home/node/app
 
 WORKDIR /home/node/app
 
-COPY package.json package-lock.json
+COPY package.json package.json
 COPY package-lock.json package-lock.json
 
 USER node
