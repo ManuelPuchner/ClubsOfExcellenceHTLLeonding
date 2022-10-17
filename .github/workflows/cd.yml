@@ -9,6 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: clubsofexcellence-htl
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+      DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_TOKEN: ${{ secrets.GOOGLE_CLIENT_TOKEN }}
+      GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+      GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+      GOOGLE_EMAIL: ${{ secrets.GOOGLE_EMAIL }}
     container: node:lts
     steps:
       - name: Checkout
