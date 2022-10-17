@@ -16,7 +16,7 @@ export default function Header() {
   return (
     <nav className="fixed z-20 w-full border-gray-200 bg-white px-2 py-2.5 dark:bg-gray-900 md:px-4">
       <div className="relative mx-auto flex max-w-screen-xl flex-wrap items-center justify-between">
-        <a href="https://flowbite.com" className="flex items-center">
+        <NavLink href="/" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/htllogo.png" className="mr-3 h-9" alt="Flowbite Logo" />
           <span className="hidden self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:block">
@@ -25,7 +25,7 @@ export default function Header() {
           <span className="self-center  whitespace-nowrap text-xl font-semibold dark:text-white sm:hidden">
             Clubs
           </span>
-        </a>
+        </NavLink>
         <div className="flex items-center md:order-2">
           {status === "loading" || status === "unauthenticated" ? (
             <Link href="/api/auth/signin">
