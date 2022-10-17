@@ -44,6 +44,8 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           pnpm build
+      - name: rm node modules
+        run: rm -rf ./node_modules/
       - name: push push artifact
         uses: actions/upload-artifact@v3
         with:
