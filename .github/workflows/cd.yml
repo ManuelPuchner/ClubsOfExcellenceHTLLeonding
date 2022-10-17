@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: ./output/
+          path: .
   docker-push:
     needs: next-build
     runs-on: ubuntu-latest
