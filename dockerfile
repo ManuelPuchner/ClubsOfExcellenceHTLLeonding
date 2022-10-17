@@ -12,6 +12,7 @@ COPY pnpm-lock.yaml pnpm-lock.yaml
 
 USER node
 
+RUN npm install -g pnpm
 RUN pnpm install --production
 RUN pnpm prisma generate
 
