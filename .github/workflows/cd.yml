@@ -58,20 +58,24 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: $IMAGE_NAME
-          secrets: |
-            "DATABASE_URL: ${{ secrets.DATABASE_URL }}"
-            "NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}"
-            "NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}"
-            "DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}"
-            "DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}"
-            "GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}"
-            "GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}"
-            "GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}"
-            "GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}"
-            "GOOGLE_EMAIL: ${{ secrets.GOOGLE_EMAIL }}"
+      - name: Build image
+        run: docker build \
+          --build-arg "DATABASE_URL=${{ secrets.DATABASE_URL }}" \
+          --build-arg "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" \
+          --build-arg "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" \
+          --build-arg "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" \
+          --build-arg "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" \
+          --build-arg "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" \
+          --build-arg "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" \
+          --build-arg "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" \
+          --build-arg "GOOGLE_REFRESH_TOKEN=${{ secrets.GOOGLE_REFRESH_TOKEN }}" \
+          --build-arg "GOOGLE_EMAIL=${{ secrets.GOOGLE_EMAIL }}" \
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
