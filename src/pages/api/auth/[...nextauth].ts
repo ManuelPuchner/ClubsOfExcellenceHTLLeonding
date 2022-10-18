@@ -5,7 +5,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
-import type { User } from "@prisma/client";
+import type { User } from "generated/client";
 
 const scopes = ["identify"].join(" ");
 

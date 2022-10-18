@@ -42,9 +42,9 @@ jobs:
       - name: install and build
         run: |
           pnpm install --frozen-lockfile
+          cp ./generated/client/schema.prisma ./.next/cache/webpack/client-production
           pnpm build
-      - name: rm node modules
-        run: rm -rf ./node_modules/
+          
       - name: create artifact dir
         run: mkdir ./output/
       - name: push push artifact

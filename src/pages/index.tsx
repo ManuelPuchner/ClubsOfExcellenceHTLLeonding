@@ -1,4 +1,4 @@
-import { Club } from "@prisma/client";
+import { Club } from "generated/client";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import CardWithImage from "../components/cards/CardWithImage";
 import { prisma } from "../server/db/client";

@@ -4,6 +4,7 @@
 generator client {
     provider        = "prisma-client-js"
     previewFeatures = ["fullTextSearch"]
+    output          = "../generated/client"
 }
 
 datasource db {
@@ -74,10 +75,9 @@ model User {
     @@unique([email, id])
 }
 
-
 model Club {
     id          String     @id @default(cuid())
-    clubname    String     
+    clubname    String
     description String
     image       String?
     adminId     String

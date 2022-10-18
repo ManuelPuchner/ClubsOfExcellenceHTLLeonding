@@ -4,7 +4,7 @@ import Accordion, { AccordionPartProp } from "../../../components/Accordion";
 import MarkdownStyled from "../../../components/MarkdownStyled";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { prisma } from "../../../server/db/client";
-import { Club, User, QandA } from "@prisma/client";
+import { Club, User, QandA } from "generated/client";
 
 export default function ClubPageTemplate({
   clubInfo,

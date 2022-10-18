@@ -1,8 +1,8 @@
 import { InferGetStaticPropsType } from "next";
-import { prisma } from "../../../server/db/client";
+import { prisma } from "src/server/db/client";
 
 import { GetServerSideProps } from "next";
-import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
+import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 import Link from "next/link";
 export default function VerifyEmail({
   user,
