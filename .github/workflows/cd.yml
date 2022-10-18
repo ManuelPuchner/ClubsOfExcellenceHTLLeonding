@@ -42,6 +42,7 @@ jobs:
       - name: install and build
         run: |
           pnpm install --frozen-lockfile
+          pnpm prisma generate
           cp ./generated/client/schema.prisma ./.next/cache/webpack/client-production
           pnpm build
           
