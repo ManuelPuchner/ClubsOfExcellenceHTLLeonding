@@ -35,7 +35,7 @@ COPY . .
 RUN \
   if [ -f yarn.lock ]; then yarn prisma generate; \
   elif [ -f package-lock.json ]; then npx prisma generate; \
-  elif [ -f pnpm-lock.yaml ]; pnpm prisma generate; \
+  elif [ -f pnpm-lock.yaml ]; then pnpm prisma generate; \
   else echo "Lockfile not found." && exit 1; \
   fi
 
