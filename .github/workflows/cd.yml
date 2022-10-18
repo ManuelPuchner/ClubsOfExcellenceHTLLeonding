@@ -59,7 +59,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
-        run: docker build  . --tag $IMAGE_NAME
+        run: docker build --tag $IMAGE_NAME --build-arg NEXT_PUBLIC_CLIENTVAR=clientvar . 
       - name: Push image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
