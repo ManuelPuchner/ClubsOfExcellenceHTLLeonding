@@ -33,6 +33,14 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN \
+  if [ -f yarn.lock ]; then yarn prisma generate; \
+  elif [ -f package-lock.json ]; then npx prisma generate; \
+  elif [ -f pnpm-lock.yaml ]; pnpm prisma generate; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+
+RUN \
   if [ -f yarn.lock ]; then yarn build; \
   elif [ -f package-lock.json ]; then npm run build; \
   elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm run build; \
