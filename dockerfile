@@ -25,7 +25,15 @@ RUN \
 
 FROM --platform=linux/amd64 node:16-alpine AS builder
 ARG DATABASE_URL
-ARG NEXT_PUBLIC_CLIENTVAR
+ARG NEXTAUTH_SECRET
+ARG NEXTAUTH_URL
+ARG DISCORD_CLIENT_ID
+ARG DISCORD_CLIENT_SECRET
+ARG GOOGLE_CLIENT_ID
+ARG GOOGLE_CLIENT_SECRET
+ARG GOOGLE_REDIRECT_URI
+ARG GOOGLE_REFRESH_TOKEN
+ARG GOOGLE_EMAIL
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -46,6 +54,10 @@ RUN \
   elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm run build; \
   else echo "Lockfile not found." && exit 1; \
   fi
+
+RUN \
+  mkdir -p ./.next/cache/webpack/client-production \
+  cp ./generated/client/schema.prisma ./.next/cache/webpack/client-production
 
 ##### RUNNER
 
