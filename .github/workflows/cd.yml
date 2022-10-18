@@ -46,9 +46,7 @@ jobs:
           mkdir -p ./.next/cache/webpack/client-production
           cp ./generated/client/schema.prisma ./.next/cache/webpack/client-production
           pnpm build
-          
-      - name: create artifact dir
-        run: mkdir ./output/
+          rm -rf ./node_modules/
       - name: push push artifact
         uses: actions/upload-artifact@v3
         with:
