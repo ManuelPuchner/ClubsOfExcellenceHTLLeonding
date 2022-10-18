@@ -43,6 +43,7 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           pnpm prisma generate
+          mkdir -p ./.next/cache/webpack/client-production
           cp ./generated/client/schema.prisma ./.next/cache/webpack/client-production
           pnpm build
           
