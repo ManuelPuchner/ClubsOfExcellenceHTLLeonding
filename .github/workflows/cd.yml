@@ -58,6 +58,8 @@ jobs:
   docker-push:
     needs: next-build
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: clubsofexcellence-htl
     steps:
       - name: Checkout
         uses: actions/checkout@v2
