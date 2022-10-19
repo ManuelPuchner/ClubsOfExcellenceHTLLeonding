@@ -18,7 +18,7 @@ export default function Header() {
       <div className="relative mx-auto flex max-w-screen-xl flex-wrap items-center justify-between">
         <NavLink href="/" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/htllogo.png" className="mr-3 h-9" alt="Flowbite Logo" />
+          <img src="/m.puchner/clubsofexcellence/htllogo.png" className="mr-3 h-9" alt="Flowbite Logo" />
           <span className="hidden self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:block">
             Clubs of Excellence
           </span>

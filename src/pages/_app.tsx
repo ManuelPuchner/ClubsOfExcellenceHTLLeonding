@@ -18,7 +18,7 @@ function MyApp({
   pageProps: { session, ...pageProps },
 }: CustomAppProps) {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session} basePath="/m.puchner/clubsofexcellence/api/auth">
       <Layout>
         {Component?.auth ? (
           <Auth>

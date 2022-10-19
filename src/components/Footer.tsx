@@ -10,7 +10,7 @@ export default function Footer() {
             <NavLink href="#">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/htllogo.png"
+                src="/m.puchner/clubsofexcellence/htllogo.png"
                 className="mr-3 h-8"
                 alt="FlowBite Logo"
               />

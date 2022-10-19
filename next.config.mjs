@@ -19,18 +19,11 @@ export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
   output: "standalone",
-  // basePath,
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/:path*',
-  //       destination: `${basePath}/:path*`,
-  //     },
-  //   ]
+  basePath,
+  assetPrefix: basePath,
+  // // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
+  // i18n: {
+  //   locales: ["en"],
+  //   defaultLocale: "en",
   // },
-  // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
 });
