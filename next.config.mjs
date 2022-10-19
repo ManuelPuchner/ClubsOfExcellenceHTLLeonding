@@ -13,11 +13,23 @@ function defineNextConfig(config) {
   return config;
 }
 
+const basePath = '/m.puchner/clubsofexcellence'
+
 export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
   output: "standalone",
-  basePath: '/m.puchner/clubsofexcellence',
+  basePath,
+  redirects: async () => {
+    return [
+      {
+        source: "/:path*",
+        destination: basePath + "/:path*",
+        permanent: false,
+        basePath: false,
+      },
+    ];
+  },
   // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
   i18n: {
     locales: ["en"],
