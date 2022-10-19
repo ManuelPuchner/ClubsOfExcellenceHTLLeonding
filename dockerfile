@@ -47,6 +47,9 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+RUN \
+  mkdir -p ./.next/cache/webpack/client-production \
+  cp ./generated/client/schema.prisma ./.next/cache/webpack/client-production
 
 RUN \
   if [ -f yarn.lock ]; then yarn build; \
@@ -55,9 +58,6 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-RUN \
-  mkdir -p ./.next/cache/webpack/client-production \
-  cp ./generated/client/schema.prisma ./.next/cache/webpack/client-production
 
 ##### RUNNER
 
