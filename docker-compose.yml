@@ -4,14 +4,15 @@ version: "3.9"
 services:
   app:
     platform: "linux/amd64"
+    image: "ghcr.io/manuelpuchner/clubsofexcellence-htl:latest"
+    volumes:
+      - ./prod-ca-2021.crt:/app/prod-ca-2021.crt
+      - ./prisma/prod-ca-2021.crt:/app/prisma/prod-ca-2021.crt
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_CLIENTVAR: "clientvar"
+      dockerfile: dockerfile
     working_dir: /app
     ports:
       - "3000:3000"
-    image: t3-app
-    environment:
-      - DATABASE_URL=database_url_goes_here
+    env_file:
+      - .env
