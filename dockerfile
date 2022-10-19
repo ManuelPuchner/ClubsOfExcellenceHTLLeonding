@@ -48,8 +48,7 @@ RUN \
   fi
 
 RUN \
-  mkdir -p ./.next/cache/webpack/client-production \
-  cp ./generated/client/schema.prisma ./.next/cache/webpack/client-production
+  mkdir -p ./.next/cache/webpack/client-production && cp ./generated/client/schema.prisma ./.next/cache/webpack/client-production
 
 RUN \
   if [ -f yarn.lock ]; then yarn build; \
