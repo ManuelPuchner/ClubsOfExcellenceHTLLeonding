@@ -19,17 +19,15 @@ export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
   output: "standalone",
-  basePath,
-  redirects: async () => {
-    return [
-      {
-        source: "/:path*",
-        destination: basePath + "/:path*",
-        permanent: false,
-        basePath: false,
-      },
-    ];
-  },
+  // basePath,
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/:path*',
+  //       destination: `${basePath}/:path*`,
+  //     },
+  //   ]
+  // },
   // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
   i18n: {
     locales: ["en"],
