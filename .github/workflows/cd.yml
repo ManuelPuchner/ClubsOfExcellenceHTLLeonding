@@ -19,6 +19,8 @@ jobs:
       GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
       GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
       GOOGLE_EMAIL: ${{ secrets.GOOGLE_EMAIL }}
+      BASE_PATH: ${{ secrets.BASE_PATH }}
+      NEXT_PUBLIC_BASE_PATH: ${{ secrets.NEXT_PUBLIC_BASE_PATH }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -74,7 +76,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
-        run: docker build . --tag $IMAGE_NAME --build-arg "DATABASE_URL=${{ secrets.DATABASE_URL }}" --build-arg "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" --build-arg "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" --build-arg "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" --build-arg "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" --build-arg "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" --build-arg "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" --build-arg "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" --build-arg "GOOGLE_REFRESH_TOKEN=${{ secrets.GOOGLE_REFRESH_TOKEN }}" --build-arg "GOOGLE_EMAIL=${{ secrets.GOOGLE_EMAIL }}" \
+        run: docker build . --tag $IMAGE_NAME --build-arg "DATABASE_URL=${{ secrets.DATABASE_URL }}" --build-arg "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" --build-arg "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" --build-arg "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" --build-arg "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" --build-arg "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" --build-arg "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" --build-arg "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" --build-arg "GOOGLE_REFRESH_TOKEN=${{ secrets.GOOGLE_REFRESH_TOKEN }}" --build-arg "GOOGLE_EMAIL=${{ secrets.GOOGLE_EMAIL }}" --build-arg "BASE_PATH=${{ secrets.BASE_PATH }} --build-arg "NEXT_PUBLIC_BASE_PATH=${{ secrets.NEXT_PUBLIC_BASE_PATH }} \
       - name: Push image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
