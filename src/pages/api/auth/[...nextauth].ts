@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    newUser: "/auth/new-user",
+    newUser: `${env.BASE_PATH || ""}/auth/new-user`,
   },
 };
 

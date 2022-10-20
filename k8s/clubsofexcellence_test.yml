@@ -41,8 +41,6 @@ kind: Ingress
 metadata:
   name: clubsofexcellence
   namespace: student-m-puchner
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /m.puchner/clubsofexcellence/$2
 spec:
   rules:
     - host: student.cloud.htl-leonding.ac.at
