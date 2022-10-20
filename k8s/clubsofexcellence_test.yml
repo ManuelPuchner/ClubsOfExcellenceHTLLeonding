@@ -42,13 +42,13 @@ metadata:
   name: clubsofexcellence
   namespace: student-m-puchner
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /m.puchner/clubsofexcellence
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
     - host: student.cloud.htl-leonding.ac.at
       http:
         paths:
-          - path: /m.puchner/clubsofexcellence
+          - path: /m.puchner/clubsofexcellence(/|$)(.*)
             pathType: Prefix
             backend:
               service:
