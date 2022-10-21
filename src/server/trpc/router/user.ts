@@ -14,7 +14,7 @@ export const userRouter = t.router({
         take: 4,
         orderBy: {
           _relevance: {
-            fields: ["email"],
+            fields: ["email", "firstname", "lastname"],
             search: email,
             sort: "desc",
           }

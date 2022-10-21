@@ -1,4 +1,5 @@
 // react
+import { UserRole } from "generated/client";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import React, { useRef } from "react";
@@ -82,6 +83,11 @@ export default function Header() {
             <li>
               <NavLink href="#">Placeholder</NavLink>
             </li>
+            {status === "authenticated" && session.user?.role === UserRole.ADMINISTRATOR && (
+              <li>
+                <NavLink href="/admin">Admin</NavLink>
+              </li>
+            )}
           </ul>
         </div>
       </div>

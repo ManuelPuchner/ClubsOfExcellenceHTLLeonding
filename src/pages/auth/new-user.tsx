@@ -1,3 +1,4 @@
+import { UserRole } from "generated/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -28,7 +29,7 @@ function NewUser() {
     setShowUpdatedSuccess(true);
   };
 
-  if (!session?.user?.isNewUser) {
+  if (session?.user?.role !== UserRole.NEW_USER) {
     return (
       <>
         <div className="relative h-screen w-full max-w-md p-4 md:h-auto">

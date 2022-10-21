@@ -6,21 +6,20 @@ export default function PictureEdit({
 }: {
   useStore: UseBoundStore<StoreApi<ClubsInfoState>>;
 }) {
-  const image = useStore((state) => state.image);
+  const [image, setImage] = useStore((state) => [state.image, state.setImage]);
   const uploadImage = async () => {
     console.log("uploadImage");
   };
   return (
     <>
-      <>
-        <img
+      <img
           src={image}
           alt="current image"
           className="
               mb-3 w-full rounded-md
             "
         />
-        <div
+        {/* <div
           id="fileUpload w-1"
           className="row-start-2 rounded-xl bg-slate-100 p-4 dark:bg-gray-900"
         >
@@ -54,8 +53,29 @@ export default function PictureEdit({
           >
             PNG, JPG, GIF bis zu 10MB
           </div>
+        </div> */}
+      <div className="">
+        Das uploaden von Bildern ist derzeit noch in Entwicklung,
+        bitte gib hier den Link zum Bild an.
+      </div>
+      <div>
+        <div>
+          <label
+            htmlFor="url"
+            className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            Image url
+          </label>
+          <input
+            type="text"
+            id="url"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            placeholder="https://images.website.com/image.jpg"
+            required
+            onChange={(e) => setImage(e.target.value)}
+          />
         </div>
-      </>
+      </div>
     </>
   );
 }

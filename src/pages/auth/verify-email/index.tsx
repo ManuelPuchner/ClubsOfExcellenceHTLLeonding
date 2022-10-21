@@ -76,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
     data: {
       emailVerified: new Date(),
-      isStudent: true,
+      role: "STUDENT",
       emailVerificationToken: null
     },
   });

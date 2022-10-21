@@ -139,15 +139,7 @@ export const getServerSideProps: GetServerSideProps<{
     },
   });
 
-  console.log(dbclub);
-
-  if (clubName == undefined) {
-    return {
-      notFound: true,
-    };
-  }
-
-  if (!dbclub) {
+  if (clubName === undefined || dbclub === null || dbclub === undefined || dbclub.isApproved === false) {
     return {
       notFound: true,
     };

@@ -6,6 +6,7 @@ import { createTransport } from "nodemailer";
 import { getMailHtml } from "../../../utils/mailhtml";
 import { randomUUID } from "crypto";
 import { getBaseUrl } from "../../../utils/trpc";
+import { UserRole } from "generated/client";
 
 export const authRouter = t.router({
   getSession: t.procedure.query(({ ctx }) => {
@@ -61,9 +62,8 @@ export const authRouter = t.router({
         lastname: input.lastname,
         email: input.email,
         phoneNumber: input.phone,
-        isNewUser: false,
+        role: UserRole.STUDENT,
         emailVerified: new Date(),
-        isStudent:     true,
         emailVerificationToken: null
       },
     });
