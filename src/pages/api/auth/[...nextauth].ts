@@ -9,6 +9,7 @@ import type { User } from "generated/client";
 
 const scopes = ["identify"].join(" ");
 
+// TODO: add oauth provider
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
