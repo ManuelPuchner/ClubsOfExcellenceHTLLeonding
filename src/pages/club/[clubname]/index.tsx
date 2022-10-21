@@ -113,7 +113,6 @@ export default function ClubPageTemplate({
               </div>
             </div>
           </div>
-          <Footer />
         </div>
       </div>
     </>
