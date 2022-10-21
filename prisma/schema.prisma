@@ -66,13 +66,20 @@ model User {
     sessions   Session[]
     User_Clubs User_Club?
 
-    isNewUser              Boolean @default(true)
-    isStudent              Boolean @default(false)
     emailVerificationToken String?
+
+    role UserRole @default(NEW_USER)
 
     adminOfClubs Club[]
 
     @@unique([email, id])
+}
+
+enum UserRole {
+    NEW_USER
+    STUDENT
+    TEACHER
+    ADMINISTRATOR
 }
 
 model Club {
@@ -84,6 +91,7 @@ model Club {
     admin       User       @relation(fields: [adminId], references: [id], onDelete: Cascade)
     User_Clubs  User_Club?
     qanda       QandA[]
+    isApproved  Boolean    @default(false)
 
     @@unique([clubname])
 }
