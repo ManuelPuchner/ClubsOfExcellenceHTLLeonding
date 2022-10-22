@@ -41,6 +41,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
+# dynamic upload files
+/public/uploads/*
+!/public/uploads/.gitkeep
+
 
 *.crt
 postgres-secret.yml

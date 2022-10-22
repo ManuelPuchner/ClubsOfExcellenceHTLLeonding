@@ -5,6 +5,8 @@ import MarkdownStyled from "../../../components/MarkdownStyled";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { prisma } from "../../../server/db/client";
 import { Club, User, QandA } from "generated/client";
+import { getServerAuthSession } from "src/server/common/get-server-auth-session";
+import { UserRole } from "generated/client";
 
 export default function ClubPageTemplate({
   clubInfo,
@@ -23,6 +25,12 @@ export default function ClubPageTemplate({
   }
   return (
     <>
+      {!clubInfo.isApproved && (
+        <div className="fixed top-24 left-10 bg-red-400 font-semibold text-lg text-red-900 text-center p-2 rounded-lg">
+          Dieser Club ist noch nicht freigeschaltet.
+        </div>
+
+      )}
       {/* parallax effect */}
       <div className="relative h-full w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -113,6 +121,7 @@ export default function ClubPageTemplate({
               </div>
             </div>
           </div>
+          <Footer />
         </div>
       </div>
     </>
@@ -139,7 +148,14 @@ export const getServerSideProps: GetServerSideProps<{
     },
   });
 
-  if (clubName === undefined || dbclub === null || dbclub === undefined || dbclub.isApproved === false) {
+  if (clubName === undefined || dbclub === null || dbclub === undefined) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const session = await getServerAuthSession(ctx);
+  if (!dbclub.isApproved && session?.user?.role != UserRole.ADMINISTRATOR) {
     return {
       notFound: true,
     };

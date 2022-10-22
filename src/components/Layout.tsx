@@ -1,7 +1,13 @@
 import Header from "./Header";
 import Footer from "./Footer";
+import { useRouter } from "next/router";
 
 export default function Layout({children}: {children: React.ReactNode}) {
+  let showFooter = true;
+  const router = useRouter();
+  if (router.pathname.startsWith("/club/")) {
+    showFooter = false;
+  }
   return (
     <>
       <div
@@ -13,7 +19,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
           {children}
         </main>
 
-        <Footer />
+        {showFooter && <Footer />}
       </div>
     </>
   );

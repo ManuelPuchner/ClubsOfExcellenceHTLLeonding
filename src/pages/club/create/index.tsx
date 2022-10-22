@@ -6,15 +6,18 @@ import CreateClubStep from "./CreateClubStep";
 import { trpc } from "../../../utils/trpc";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import axios from "axios";
+import { env } from "src/env/client.mjs";
 
-const useCreateClubStore = create<ClubsInfoState>((set) => ({
+export const useCreateClubStore = create<ClubsInfoState>((set) => ({
   clubname: "",
   image: "",
   description: "",
   qanda: new Array<QandA>(),
   adminId: "",
+  imageName: "",
   setClubname: (clubname: string) => set({ clubname }),
-  setImage: (image: string) => set({ image }),
+  setImageName: (imageName: string) => set({ imageName }),
   addQandAEmpty: () =>
     set((state) => ({ qanda: [...state.qanda, { question: "", answer: "" }] })),
   editQandA: (key: keyof QandA, value: string, index: number) =>
@@ -34,6 +37,7 @@ const useCreateClubStore = create<ClubsInfoState>((set) => ({
     }),
   setDescription: (description: string) => set({ description }),
   setAdminId: (adminId: string) => set({ adminId }),
+  setImage: (image: string) => set({ image }),
 }));
 
 function Create() {
@@ -49,6 +53,7 @@ function Create() {
     state.adminId,
     state.setAdminId,
   ]);
+  const setImage = useCreateClubStore((state) => state.setImage);
 
   const [email, setEmail] = useState("");
   const [timer, setTimer] = useState<number | null>(null);
@@ -83,6 +88,21 @@ function Create() {
     }
   };
 
+
+  const onImageChange = async (formData: FormData) => {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    };
+
+    const response = await axios.post(env.NEXT_PUBLIC_BASE_PATH + "/api/upload/image", formData, config);
+
+    if(response.status === 200 && response.data?.path) {
+      setImage(response.data.path);
+    }
+  };
+
   const searchUserByEmailMutation = trpc.user.searchUserByEMail.useMutation();
   const searchUserByMail = (email: string) => {
     setEmail(email);
@@ -96,7 +116,6 @@ function Create() {
         const data = await searchUserByEmailMutation.mutateAsync({ email });
         setResults(data);
         console.log(email, data);
-        
       } else {
         setResults([]);
       }
@@ -197,7 +216,7 @@ function Create() {
           <QandAEdit useStore={useCreateClubStore} />
         </CreateClubStep>
         <CreateClubStep stepText="Step 5: Bild">
-          <PictureEdit useStore={useCreateClubStore} />
+          <PictureEdit onChange={onImageChange} />
         </CreateClubStep>
         <CreateClubStep stepText="Step 6: Submit">
           <div className="flex flex-col items-center justify-center">

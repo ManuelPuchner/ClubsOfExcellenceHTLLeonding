@@ -15,7 +15,9 @@ declare module "club" {
     addQandAEmpty: () => any;
     editQandA: (key: any, value: string, index: number) => any;
     deleteQandA: (index: number) => any;
+    imageName: string;
     setImage: (image: string) => any;
+    setImageName: (image: string) => any;
     setDescription: (about: string) => any;
     setAdminId: (adminId: string) => any;
   }
