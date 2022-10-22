@@ -2,6 +2,7 @@ import { Spinner } from "flowbite-react";
 import { Club } from "generated/client";
 import { trpc } from "src/utils/trpc";
 import CardWithImage from "../components/cards/CardWithImage";
+import { getImagePath } from "src/utils/imagePrefixer";
 
 const Home = () => {
   const { data: clubs, status } = trpc.club.getAllApprovedClubs.useQuery();
@@ -20,7 +21,7 @@ const Home = () => {
                   description={club.description}
                   buttonText={"Join"}
                   buttonLink={`/club/${club.clubname}`}
-                  image={club.image || ""}
+                  image={getImagePath(club.image)}
                 />
               </div>
             ))}

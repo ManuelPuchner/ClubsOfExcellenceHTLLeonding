@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import multer from "multer";
 import filenamify from "filenamify";
-import { env } from "src/env/server.mjs";
 
 interface NextConnectApiRequest extends NextApiRequest {
   files: Express.Multer.File[];
@@ -58,7 +57,7 @@ const apiRoute = nextConnect({
 apiRoute.use(upload.single("image"));
 
 apiRoute.post((req: NextConnectApiRequest, res: NextApiResponse) => {
-  const imagePathClient = req.file.path.replace("public", env.BASE_PATH);
+  const imagePathClient = req.file.path.replace("public", "");
   return res.status(200).json({ message: "success", path: imagePathClient });
 });
 

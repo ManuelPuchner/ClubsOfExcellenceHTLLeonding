@@ -3,6 +3,7 @@ import { Club } from "generated/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Spinner from "src/components/Spinner";
+import { getImagePath } from "src/utils/imagePrefixer";
 import { trpc } from "src/utils/trpc";
 import create from "zustand";
 
@@ -183,14 +184,8 @@ function ApproveClubModal() {
 
 function LoadedView() {
   const [clubs] = useUpdateClubStore((state) => [state.clubs]);
-  const [modalOpen, setModalOpen] = useUpdateClubStore((state) => [
-    state.modalOpen,
-    state.setModalOpen,
-  ]);
-  const [modalClubId, setModalClubId] = useUpdateClubStore((state) => [
-    state.modalClubId,
-    state.setModalClubId,
-  ]);
+  const setModalOpen = useUpdateClubStore((state) => state.setModalOpen);
+  const setModalClubId = useUpdateClubStore((state) => state.setModalClubId);
   return (
     <div className="">
       {clubs?.map((club: Club) => {
@@ -201,7 +196,7 @@ function LoadedView() {
           >
             <img
               className="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
-              src={club.image || ""}
+              src={getImagePath(club.image)}
               alt=""
             />
             <div className="w-full">

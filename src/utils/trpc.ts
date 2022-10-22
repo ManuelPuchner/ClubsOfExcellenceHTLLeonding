@@ -15,7 +15,6 @@ export const getBaseUrl = () => {
 export const trpc = createTRPCNext<AppRouter>({
   config({ ctx }) {
     const url = getBaseUrl() + process.env.NEXT_PUBLIC_BASE_PATH + "/api/trpc";
-    console.log("url", url);
     return {
       transformer: superjson,
       links: [

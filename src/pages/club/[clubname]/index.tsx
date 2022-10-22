@@ -7,12 +7,11 @@ import { prisma } from "../../../server/db/client";
 import { Club, User, QandA } from "generated/client";
 import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 import { UserRole } from "generated/client";
+import { getImagePath } from "src/utils/imagePrefixer";
 
 export default function ClubPageTemplate({
   clubInfo,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(clubInfo);
-
   let qanda: AccordionPartProp[] = [];
   if (clubInfo.qanda != undefined && clubInfo.qanda.length != 0) {
     const temp = clubInfo.qanda.map((qa: QandA) => {
@@ -26,16 +25,15 @@ export default function ClubPageTemplate({
   return (
     <>
       {!clubInfo.isApproved && (
-        <div className="fixed top-24 left-10 bg-red-400 font-semibold text-lg text-red-900 text-center p-2 rounded-lg">
+        <div className="fixed top-24 left-10 rounded-lg bg-red-400 p-2 text-center text-lg font-semibold text-red-900">
           Dieser Club ist noch nicht freigeschaltet.
         </div>
-
       )}
       {/* parallax effect */}
       <div className="relative h-full w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={clubInfo.image || ""}
+          src={getImagePath(clubInfo.image)}
           alt="club image"
           className="h-128 fixed left-0 z-0 w-full object-cover opacity-80"
         />
