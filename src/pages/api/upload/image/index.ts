@@ -9,7 +9,7 @@ interface NextConnectApiRequest extends NextApiRequest {
   file: Express.Multer.File;
 }
 
-const outputFolderName = env.NODE_ENV === "production" ? "" : "./public/uploads";
+const outputFolderName = "./public/uploads";
 const TEM_MB = 1024 * 1024 * 10;
 
 const storage = multer.diskStorage({
