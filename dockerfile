@@ -72,7 +72,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/. ./
-RUN chown -R nextjs:nodejs /app/public
+RUN chown -R nextjs:nodejs /app/public/uploads
 USER nextjs
 EXPOSE 3000
 ENV PORT 3000

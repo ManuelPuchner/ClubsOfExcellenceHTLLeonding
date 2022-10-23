@@ -2,13 +2,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import multer from "multer";
 import filenamify from "filenamify";
+import { env } from "src/env/server.mjs";
 
 interface NextConnectApiRequest extends NextApiRequest {
   files: Express.Multer.File[];
   file: Express.Multer.File;
 }
 
-const outputFolderName = "./public/uploads";
+const outputFolderName = env.NODE_ENV === "production" ? "" : "./public/uploads";
 const TEM_MB = 1024 * 1024 * 10;
 
 const storage = multer.diskStorage({

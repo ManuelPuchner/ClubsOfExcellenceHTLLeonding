@@ -16,11 +16,18 @@ spec:
       containers:
         - name: clubsofexcellence
           image: ghcr.io/manuelpuchner/clubsofexcellence-htl:latest
+          volumeMounts:
+            - mountPath: /app/public/uploads
+              name: leoclubs-files
           envFrom:
           - secretRef:
               name: cle
           ports:
             - containerPort: 3000
+      volumes:
+        - name: leoclubs-files
+          persistentVolumeClaim:
+              claimName: leoclubs-file-upload-pvc
 ---
 apiVersion: v1
 kind: Service
