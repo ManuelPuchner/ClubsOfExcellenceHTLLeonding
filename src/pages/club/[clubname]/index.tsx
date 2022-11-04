@@ -8,11 +8,14 @@ import { Club, User, QandA } from "generated/client";
 import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 import { UserRole } from "generated/client";
 import { getImagePath } from "src/utils/imagePrefixer";
+import { MouseEventHandler, useState } from "react";
+import { trpc } from "src/utils/trpc";
 
 export default function ClubPageTemplate({
   clubInfo,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   let qanda: AccordionPartProp[] = [];
+  const [isApproved, setIsApproved] = useState(clubInfo.isApproved);
   if (clubInfo.qanda != undefined && clubInfo.qanda.length != 0) {
     const temp = clubInfo.qanda.map((qa: QandA) => {
       return {
@@ -22,11 +25,30 @@ export default function ClubPageTemplate({
     });
     qanda = temp;
   }
+  const setApprovalMutation = trpc.club.setClubApproval.useMutation();
+  const approveClub: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+    const isApproved = await setApprovalMutation.mutateAsync({
+      clubId: clubInfo.id,
+      approved: true,
+    });
+    if (isApproved) {
+      setIsApproved(true);
+    } else {
+      alert("Something went wrong");
+    }
+  };
   return (
     <>
-      {!clubInfo.isApproved && (
-        <div className="fixed top-24 left-10 rounded-lg bg-red-400 p-2 text-center text-lg font-semibold text-red-900">
+      {!isApproved && (
+        <div className="fixed top-24 left-10 z-30 rounded-lg bg-red-400 p-2 text-center text-lg font-semibold text-red-900">
           Dieser Club ist noch nicht freigeschaltet.
+          <button
+            onClick={approveClub}
+            className="ml-2 rounded bg-green-200 px-2 font-semibold text-green-900 shadow hover:bg-green-300"
+          >
+            Jetzt freischalten
+          </button>
         </div>
       )}
       {/* parallax effect */}
