@@ -10,12 +10,25 @@ import { UserRole } from "generated/client";
 import { getImagePath } from "src/utils/imagePrefixer";
 import { MouseEventHandler, useState } from "react";
 import { trpc } from "src/utils/trpc";
+import { useRouter } from "next/router";
 
-export default function ClubPageTemplate({
-  clubInfo,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function ClubPageTemplate() {
+  const router = useRouter();
+  const { clubname: clubName } = router.query as { clubname: string };
+  
+  const {status, data: clubInfo} = trpc.club.getClubByName.useQuery(clubName);
+  const setApprovalMutation = trpc.club.setClubApproval.useMutation();
+  const [isApproved, setIsApproved] = useState(clubInfo?.isApproved || false);
+  
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "error") {
+    return <div>Error</div>;
+  }
   let qanda: AccordionPartProp[] = [];
-  const [isApproved, setIsApproved] = useState(clubInfo.isApproved);
+  
   if (clubInfo.qanda != undefined && clubInfo.qanda.length != 0) {
     const temp = clubInfo.qanda.map((qa: QandA) => {
       return {
@@ -25,7 +38,6 @@ export default function ClubPageTemplate({
     });
     qanda = temp;
   }
-  const setApprovalMutation = trpc.club.setClubApproval.useMutation();
   const approveClub: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     const isApproved = await setApprovalMutation.mutateAsync({
@@ -147,45 +159,3 @@ export default function ClubPageTemplate({
     </>
   );
 }
-
-type ClubInfo = Club & {
-  admin: User;
-  qanda: QandA[];
-};
-
-export const getServerSideProps: GetServerSideProps<{
-  clubInfo: ClubInfo;
-}> = async (ctx) => {
-  const clubName = ctx.params?.clubname as string;
-
-  const dbclub = await prisma.club.findUnique({
-    where: {
-      clubname: clubName,
-    },
-    include: {
-      qanda: true,
-      admin: true,
-    },
-  });
-
-  if (clubName === undefined || dbclub === null || dbclub === undefined) {
-    return {
-      notFound: true,
-    };
-  }
-
-  const session = await getServerAuthSession(ctx);
-  if (!dbclub.isApproved && session?.user?.role != UserRole.ADMINISTRATOR) {
-    return {
-      notFound: true,
-    };
-  }
-
-  const clubInfo: ClubInfo = JSON.parse(JSON.stringify(dbclub));
-
-  return {
-    props: {
-      clubInfo: clubInfo,
-    },
-  };
-};
