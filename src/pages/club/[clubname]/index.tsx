@@ -2,33 +2,40 @@ import { Card } from "flowbite-react";
 import Footer from "../../../components/Footer";
 import Accordion, { AccordionPartProp } from "../../../components/Accordion";
 import MarkdownStyled from "../../../components/MarkdownStyled";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { prisma } from "../../../server/db/client";
-import { Club, User, QandA } from "generated/client";
-import { getServerAuthSession } from "src/server/common/get-server-auth-session";
-import { UserRole } from "generated/client";
+import { QandA } from "generated/client";
 import { getImagePath } from "src/utils/imagePrefixer";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { trpc } from "src/utils/trpc";
 import { useRouter } from "next/router";
+import Spinner from "src/components/Spinner";
 
 export default function ClubPageTemplate() {
   const router = useRouter();
   const { clubname: clubName } = router.query as { clubname: string };
-  
-  const {status, data: clubInfo} = trpc.club.getClubByName.useQuery(clubName);
+
+  const { status, data: clubInfo } = trpc.club.getClubByName.useQuery(
+    clubName,
+    { enabled: !!clubName }
+  );
   const setApprovalMutation = trpc.club.setClubApproval.useMutation();
-  const [isApproved, setIsApproved] = useState(clubInfo?.isApproved || false);
-  
+  const [isApproved, setIsApproved] = useState<boolean | undefined>(true);
+
+  useEffect(() => {
+    if (clubInfo) {
+      setIsApproved(clubInfo.isApproved);
+    }
+  }, [clubInfo]);
+
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (status === "error") {
+    setIsApproved(false);
     return <div>Error</div>;
   }
   let qanda: AccordionPartProp[] = [];
-  
+
   if (clubInfo.qanda != undefined && clubInfo.qanda.length != 0) {
     const temp = clubInfo.qanda.map((qa: QandA) => {
       return {
